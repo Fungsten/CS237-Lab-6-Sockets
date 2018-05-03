@@ -1,5 +1,6 @@
 /*
  * dictclient.c - A simple dictionary client
+ * A lab by Will Fung and Jian Lu
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -124,30 +125,22 @@ int main(int argc, char **argv) {
 
   bzero(buf, BUFSIZE);
   res = fgets(buf, BUFSIZE, stdin);
-  printf("%s",buf);
   strcat(prefix, buf);
-  printf("%s", prefix);
   if (res == NULL) error("ERROR reading from stdin\n");
 
-  printf("got past reading from stdin\n");
-  // trimmed_syn = find_synonym(hostname, res);
   /* print result to stdout */
   /* Writing to the server */
   n = write(sockfd, prefix, strlen(prefix));
-  printf("n: %d",n);
   if (n < 0) error("Error Writing to socket");
-  printf("got past writing to socket\n");
 
   /* read: print the server's reply */
   bzero(buf, BUFSIZE);
   n = read(sockfd, buf, BUFSIZE);
   if (n < 0) error("ERROR reading from socket");
-  //printf("Echo from server: %s", buf);
-  printf("got past reading from socket\n");
 
   trimmed_syn = find_synonym(buf, sockfd);
   printf("Synonym: %s \n", trimmed_syn);
-  printf("finished\n");
+  // printf("finished\n");
 
   close(sockfd);
   freeaddrinfo(servinfo);
